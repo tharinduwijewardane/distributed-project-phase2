@@ -23,7 +23,7 @@ public class Node {
      * @param query
      * @return
      */
-    static boolean checkInRecentQueries(String query) {
+    static boolean checkInRecentQueries(final String query) {
 
         if (recentSearchQueries.contains(query)) {
             return true;
@@ -71,7 +71,7 @@ public class Node {
      * @param myUDPSocket
      * @param filename
      */
-    static void searchFile(DatagramSocket myUDPSocket, String filename) {
+    static void searchFile(final DatagramSocket myUDPSocket, String filename) {
 
         String basicQuery = "SER " + Util.IP + " " + Util.PORT + " " + filename;
         checkInRecentQueries(basicQuery); // just to add the entry
@@ -129,7 +129,7 @@ public class Node {
      *
      * @param myUDPSocket
      */
-    static void joinDistributedSystem(DatagramSocket myUDPSocket) {
+    static void joinDistributedSystem(final DatagramSocket myUDPSocket) {
 
         receiver = new Thread() {
             @Override
@@ -177,7 +177,8 @@ public class Node {
             String keyword = st.nextToken();
             if (keyword.equalsIgnoreCase("JOIN")) { // received join request
                 Neighbour n = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
-                Util.addNeighbour(n);
+                neighbours.add(n);
+                gui.refreshNeighbourList();
                 NodeSender.sendUDP(myUDPSocket, Util.formMessage("JOINOK 0"), ip, port);
                 System.out.println("neighbour joined: " + n.ipAddress + " " + n.port);
 
@@ -185,7 +186,8 @@ public class Node {
                 switch (st.nextToken()) {
                     case "0": // successful
                         Neighbour n = new Neighbour(ip, port);
-                        Util.addNeighbour(n);
+                        neighbours.add(n);
+                        gui.refreshNeighbourList();
                         System.out.println("neighbour added: " + n.ipAddress + " " + n.port);
                         break;
 
@@ -196,11 +198,15 @@ public class Node {
             } else if (keyword.equalsIgnoreCase("LEAVE")) { // received leave request
                 String neighbourIp = st.nextToken(); // use given ip:port (or can use source ip:port)
                 int neighbourPort = Integer.parseInt(st.nextToken());
-                for (Neighbour neighbour : neighbours) {
+                Iterator<Neighbour> neighboursItr = neighbours.iterator();
+                while (neighboursItr.hasNext()) {
+                    Neighbour neighbour = neighboursItr.next();
                     if (neighbour.ipAddress.equalsIgnoreCase(neighbourIp) && neighbour.port == neighbourPort) {
-                        Util.removeNeighbour(neighbour);
+                        neighboursItr.remove();
                     }
                 }
+                gui.refreshNeighbourList();
+
                 NodeSender.sendUDP(myUDPSocket, Util.formMessage("LEAVEOK 0"), ip, port); //send to the source ip:port
                 System.out.println("neighbour leaved: " + neighbourIp + " " + neighbourPort);
 
@@ -278,13 +284,13 @@ public class Node {
                     while (st.hasMoreTokens()) {
                         String msg = "File found: " + st.nextToken() + " in " + locatedIp;
                         System.out.println(msg);
-                        gui.textAreaResults.append(msg);
+                        gui.textAreaResults.append(msg + " \n");
                     }
                 } else {
                     switch (numberOfFiles) {
                         case 0:
                             System.out.println("file not found in node");
-                            gui.textAreaResults.append("file not found in node");
+                            gui.textAreaResults.append("file not found in node \n");
                             break;
                         case 9999: // failure due to node unreachable
                             break;
@@ -319,7 +325,8 @@ public class Node {
 
                     case "1": // request is successful, 1 contacts will be returned
                         Neighbour n1 = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
-                        Util.addNeighbour(n1);
+                        neighbours.add(n1);
+                        gui.refreshNeighbourList();
                         System.out.println("neighbour added from BS. " + n1.ipAddress + " " + n1.port);
                         break;
 
@@ -351,7 +358,8 @@ public class Node {
 
                         for (int i = 0; i < 2; i++) { //add only 2 neighbours
                             Neighbour n = obtainedNeighbours.remove(new Random().nextInt(obtainedNeighbours.size()));
-                            Util.addNeighbour(n);
+                            neighbours.add(n);
+                            gui.refreshNeighbourList();
                             System.out.println("neighbour added from BS. " + n.ipAddress + " " + n.port);
                         }
                         break;
@@ -359,12 +367,14 @@ public class Node {
                     case "2": // request is successful, 2 nodes' contacts will be returned
                         Neighbour n2 = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
                         st.nextToken(); // username
-                        Util.addNeighbour(n2);
+                        neighbours.add(n2);
+                        gui.refreshNeighbourList();
                         System.out.println("neighbour added from BS. " + n2.ipAddress + " " + n2.port);
 
                         Neighbour n3 = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
                         st.nextToken(); // username
-                        Util.addNeighbour(n3);
+                        neighbours.add(n3);
+                        gui.refreshNeighbourList();
                         System.out.println("neighbour added from BS. " + n3.ipAddress + " " + n3.port);
                         break;
 

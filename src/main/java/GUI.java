@@ -124,7 +124,6 @@ public class GUI {
         searchButton.setEnabled(false);
 
         Node.gui = this;
-        Util.gui = this;
     }
 
     void refreshNeighbourList() {
