@@ -5,12 +5,12 @@ import java.util.ArrayList;
  */
 public class Util {
 
-    public static final String IP = "10.8.108.145"; // my ip address
-    public static final int PORT = 9901; // my port
-    public static final String USERNAME = "abc"; // my username
+    public static String IP = "10.8.108.145"; // my ip address
+    public static int PORT = 9901; // my port
+    public static String USERNAME = "abc"; // my username
 
-    public static final String BS_IP = "10.8.108.145";
-    public static final int BS_PORT = 9900;
+    public static String BS_IP = "10.8.108.145";
+    public static int BS_PORT = 9900;
 
     static ArrayList<String> allFiles = new ArrayList<String>();
 

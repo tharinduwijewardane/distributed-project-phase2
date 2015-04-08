@@ -18,18 +18,28 @@ public class GUI {
     private static JFrame frame;
 
     private JPanel panel1;
-    private JButton joinButton;
-    private JButton leaveButton;
     private JTextField textField1;
     private JButton searchButton;
     JTextArea textAreaResults;
     private JTextArea textAreaMyFiles;
     private JTextArea textAreaMyNeighbours;
+    private JButton joinButton;
+    private JButton leaveButton;
+    private JTextField textFieldBsIp;
+    private JTextField textFieldBsPort;
+    private JTextField textFieldMyPort;
+    private JTextField textFieldMyIp;
+    private JTextField textFieldMyUsername;
 
     static DatagramSocket myUDPSocket;
 
-
     public GUI() {
+
+        textFieldBsIp.setText(Util.BS_IP);
+        textFieldBsPort.setText(Integer.toString(Util.BS_PORT));
+        textFieldMyIp.setText(Util.IP);
+        textFieldMyPort.setText(Integer.toString(Util.PORT));
+        textFieldMyUsername.setText(Util.USERNAME);
 
         Node.setupFiles();
         textAreaMyFiles.setText("");
@@ -40,6 +50,18 @@ public class GUI {
         joinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                Util.BS_IP = textFieldBsIp.getText();
+                Util.BS_PORT = Integer.parseInt(textFieldBsPort.getText());
+                Util.IP = textFieldMyIp.getText();
+                Util.PORT = Integer.parseInt(textFieldMyPort.getText());
+                Util.USERNAME = textFieldMyUsername.getText();
+
+                textFieldBsIp.setEnabled(false);
+                textFieldBsPort.setEnabled(false);
+                textFieldMyIp.setEnabled(false);
+                textFieldMyPort.setEnabled(false);
+                textFieldMyUsername.setEnabled(false);
 
                 Node.registerWithBS();
 
@@ -64,6 +86,12 @@ public class GUI {
                 joinButton.setEnabled(true);
                 leaveButton.setEnabled(false);
                 searchButton.setEnabled(false);
+
+                textFieldBsIp.setEnabled(true);
+                textFieldBsPort.setEnabled(true);
+                textFieldMyIp.setEnabled(true);
+                textFieldMyPort.setEnabled(true);
+                textFieldMyUsername.setEnabled(true);
             }
         });
         searchButton.addActionListener(new ActionListener() {
