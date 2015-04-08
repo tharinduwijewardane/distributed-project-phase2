@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +10,23 @@ import java.util.HashSet;
  * Created by Tharindu on 2015-03-06.
  */
 public class Main {
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                try {
+                    GUI.init();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    /*
     public static void main(String[] args) throws SocketException {
 
         Node.setupFiles();
@@ -59,4 +77,5 @@ public class Main {
         }
 
     }
+     */
 }

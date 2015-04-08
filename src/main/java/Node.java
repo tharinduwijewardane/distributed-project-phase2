@@ -8,6 +8,8 @@ import java.util.*;
  */
 public class Node {
 
+    static GUI gui;
+
     static ArrayList<String> localFiles = new ArrayList<String>();
     static HashSet<Neighbour> neighbours = new HashSet<Neighbour>(); // routing table
     static Vector<String> recentSearchQueries = new Vector<String>();
@@ -274,12 +276,15 @@ public class Node {
                     int hops = Integer.parseInt(st.nextToken());
 
                     while (st.hasMoreTokens()) {
-                        System.out.println("File found: " + st.nextToken() + " in " + locatedIp);
+                        String msg = "File found: " + st.nextToken() + " in " + locatedIp;
+                        System.out.println(msg);
+                        gui.textAreaResults.append(msg);
                     }
                 } else {
                     switch (numberOfFiles) {
                         case 0:
                             System.out.println("file not found in node");
+                            gui.textAreaResults.append("file not found in node");
                             break;
                         case 9999: // failure due to node unreachable
                             break;
