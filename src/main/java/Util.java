@@ -5,6 +5,8 @@ import java.util.ArrayList;
  */
 public class Util {
 
+    static GUI gui;
+
     public static String IP = "10.8.108.145"; // my ip address
     public static int PORT = 9901; // my port
     public static String USERNAME = "abc"; // my username
@@ -55,6 +57,7 @@ public class Util {
      */
     public static synchronized void addNeighbour(Neighbour n) {
         Node.neighbours.add(n);
+        gui.refreshNeighbourList();
     }
 
     /**
@@ -64,6 +67,7 @@ public class Util {
      */
     public static synchronized void removeNeighbour(Neighbour n) {
         Node.neighbours.remove(n);
+        gui.refreshNeighbourList();
     }
 
 }

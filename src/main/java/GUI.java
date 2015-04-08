@@ -65,10 +65,7 @@ public class GUI {
 
                 Node.registerWithBS();
 
-                textAreaMyNeighbours.setText("");
-                for (Neighbour n : Node.neighbours) {
-                    textAreaMyNeighbours.append(n.ipAddress + " : " + n.port + " \n");
-                }
+                refreshNeighbourList();
 
                 Node.joinDistributedSystem(myUDPSocket);
 
@@ -117,6 +114,14 @@ public class GUI {
         searchButton.setEnabled(false);
 
         Node.gui = this;
+        Util.gui = this;
+    }
+
+    void refreshNeighbourList() {
+        textAreaMyNeighbours.setText("");
+        for (Neighbour n : Node.neighbours) {
+            textAreaMyNeighbours.append(n.ipAddress + " : " + n.port + " \n");
+        }
     }
 
     public static void init() throws SocketException {
@@ -133,7 +138,7 @@ public class GUI {
         frame.pack(); // packs the window according to components inside. this is not removed because its required to correct layouts
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setBounds(0, 0, screenSize.width * 1 / 2, screenSize.height * 2 / 3);
+        frame.setBounds(0, 0, screenSize.width * 2 / 3, screenSize.height * 2 / 3);
 
         frame.setVisible(true);
 
