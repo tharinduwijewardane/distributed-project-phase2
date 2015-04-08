@@ -319,7 +319,6 @@ public class Node {
                         break;
 
                     // even though the sever sends multiple neighbours (due to a bug in server), first 2 are taken
-                    case "3":
                     case "4":
                     case "5":
                     case "6":
@@ -337,6 +336,21 @@ public class Node {
                     case "18":
                     case "19":
                     case "20":
+                    case "3":
+                        List<Neighbour> obtainedNeighbours = new ArrayList<Neighbour>();
+                        while ((st.hasMoreTokens())) {
+                            Neighbour n = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
+                            st.nextToken(); // username
+                            obtainedNeighbours.add(n);
+                        }
+
+                        for (int i = 0; i < 2; i++) { //add only 2 neighbours
+                            Neighbour n = obtainedNeighbours.remove(new Random().nextInt(obtainedNeighbours.size()));
+                            Util.addNeighbour(n);
+                            System.out.println("neighbour added from BS. " + n.ipAddress + " " + n.port);
+                        }
+                        break;
+
                     case "2": // request is successful, 2 nodes' contacts will be returned
                         Neighbour n2 = new Neighbour(st.nextToken(), Integer.parseInt(st.nextToken()));
                         st.nextToken(); // username
