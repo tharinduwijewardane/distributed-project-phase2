@@ -63,15 +63,23 @@ public class GUI {
                 textFieldMyPort.setEnabled(false);
                 textFieldMyUsername.setEnabled(false);
 
-                Node.registerWithBS();
+                try {
+                    myUDPSocket = new DatagramSocket(Util.PORT); //the port used for all UDP communication
 
-                refreshNeighbourList();
+                    Node.registerWithBS();
 
-                Node.joinDistributedSystem(myUDPSocket);
+                    refreshNeighbourList();
 
-                joinButton.setEnabled(false);
-                leaveButton.setEnabled(true);
-                searchButton.setEnabled(true);
+                    Node.joinDistributedSystem(myUDPSocket);
+
+                    joinButton.setEnabled(false);
+                    leaveButton.setEnabled(true);
+                    searchButton.setEnabled(true);
+
+                } catch (SocketException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         });
         leaveButton.addActionListener(new ActionListener() {
@@ -89,6 +97,8 @@ public class GUI {
                 textFieldMyIp.setEnabled(true);
                 textFieldMyPort.setEnabled(true);
                 textFieldMyUsername.setEnabled(true);
+
+                textAreaMyNeighbours.setText("");
             }
         });
         searchButton.addActionListener(new ActionListener() {
@@ -142,7 +152,6 @@ public class GUI {
 
         frame.setVisible(true);
 
-        myUDPSocket = new DatagramSocket(Util.PORT); //the port used for all UDP communication
     }
 
 }
