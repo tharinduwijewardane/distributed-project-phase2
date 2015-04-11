@@ -282,15 +282,20 @@ public class Node {
                     int hops = Integer.parseInt(st.nextToken());
 
                     while (st.hasMoreTokens()) {
-                        String msg = "File found: " + st.nextToken() + " in " + locatedIp;
+                        String msg = "FILE FOUND: " + st.nextToken() + " in " + locatedIp;
                         System.out.println(msg);
                         gui.textAreaResults.append(msg + " \n");
                     }
                 } else {
                     switch (numberOfFiles) {
                         case 0:
-                            System.out.println("file not found in node");
-                            gui.textAreaResults.append("file not found in node \n");
+                            String locatedIp = st.nextToken(); // ip of the node which has the file
+                            int locatedPort = Integer.parseInt(st.nextToken());
+
+                            String msg = locatedIp + " file not found";
+
+                            System.out.println(msg);
+                            gui.textAreaResults.append(msg + " \n");
                             break;
                         case 9999: // failure due to node unreachable
                             break;

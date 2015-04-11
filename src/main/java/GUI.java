@@ -64,7 +64,10 @@ public class GUI {
                 textFieldMyUsername.setEnabled(false);
 
                 try {
-                    myUDPSocket = new DatagramSocket(Util.PORT); //the port used for all UDP communication
+
+                    if (myUDPSocket == null) {
+                        myUDPSocket = new DatagramSocket(Util.PORT); //the port used for all UDP communication
+                    }
 
                     Node.registerWithBS();
 
@@ -141,7 +144,7 @@ public class GUI {
 //            e.printStackTrace();
 //        }
 
-        frame = new JFrame("Node");
+        frame = new JFrame("Phase 2 Node");
         frame.setContentPane(new GUI().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack(); // packs the window according to components inside. this is not removed because its required to correct layouts
